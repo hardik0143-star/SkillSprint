@@ -1,0 +1,9 @@
+window.ROADMAPS = [
+  {id:'ai-workplace',icon:'🤖',title:'AI for Everyday Work',audience:'Best for non-coders and business professionals',courseIds:['sid-ai','hp-ai-business','cisco-modern-ai'],outcome:'Understand AI, prompt better, and apply AI responsibly to real work.',tag:'Popular'},
+  {id:'data-analyst',icon:'📊',title:'Data Analyst Starter',audience:'Excel / SQL / visualization foundation',courseIds:['sl-excel-ba','kaggle-intro-sql','kaggle-dataviz'],outcome:'Analyze business data, query it and communicate insights visually.',tag:'High demand'},
+  {id:'cyber-starter',icon:'🛡️',title:'Cybersecurity Starter',audience:'For beginners exploring security roles',courseIds:['hp-cyber','ibm-cyber','cisco-intro-cyber'],outcome:'Build practical awareness before moving into deeper cyber pathways.',tag:'Career switch'},
+  {id:'ba-pm',icon:'🧭',title:'Business Analyst + PM',audience:'Requirements, projects and AI productivity',courseIds:['sl-ba','sl-pm101','sl-chatgpt-pm'],outcome:'Strengthen BA/PM vocabulary and immediately useful delivery skills.',tag:'Business'},
+  {id:'marketing-ai',icon:'📣',title:'AI-Era Digital Marketing',audience:'SEO, AEO and digital marketing',courseIds:['hub-aeo','sem-ai-vis','hub-dm'],outcome:'Understand modern discoverability across search engines and AI answers.',tag:'2026 skill'},
+  {id:'coding-foundation',icon:'💻',title:'Coding Foundation',audience:'Absolute beginners who want hands-on practice',courseIds:['kaggle-intro-programming','kaggle-python','cisco-packet-tracer'],outcome:'Build coding confidence and get hands-on with Python and network simulation.',tag:'Hands-on'},
+  {id:'healthcare-ai',icon:'🧬',title:'Healthcare + AI Primer',audience:'Healthcare and life-science professionals',courseIds:['sid-ai','sl-health-ai','hp-critical-ai'],outcome:'Build a safe, practical foundation for understanding AI in healthcare settings.',tag:'Healthcare'}
+];

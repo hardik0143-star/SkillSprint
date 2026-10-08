@@ -1,0 +1,23 @@
+{
+  "checked_at": "2026-10-06 baseline",
+  "summary": {
+    "providers_checked": 10,
+    "provider_changes": 0,
+    "courses_checked": 48,
+    "course_issues": 0,
+    "blocked_checks": 0
+  },
+  "sources": [
+    {"name":"Skill India Digital Hub","url":"https://www.skillindiadigital.gov.in/","changed":false,"status":"ok"},
+    {"name":"IBM SkillsBuild","url":"https://skillsbuild.org/learning-catalog","changed":false,"status":"ok"},
+    {"name":"HP LIFE","url":"https://www.life-global.org/allcourses","changed":false,"status":"ok"},
+    {"name":"Simplilearn SkillUp","url":"https://www.simplilearn.com/skillup-free-online-courses","changed":false,"status":"ok"},
+    {"name":"HubSpot Academy","url":"https://academy.hubspot.com/certification-overview","changed":false,"status":"ok"},
+    {"name":"Semrush Academy","url":"https://www.semrush.com/academy/certification/","changed":false,"status":"ok"},
+    {"name":"Cisco Networking Academy","url":"https://www.netacad.com/catalogs/learn","changed":false,"status":"ok"},
+    {"name":"Kaggle Learn","url":"https://www.kaggle.com/learn","changed":false,"status":"ok"},
+    {"name":"NCS DigiSaksham","url":"https://www.ncs.gov.in/job-seeker/_layouts/15/ncsp/faqs.aspx","changed":false,"status":"tracked"},
+    {"name":"FutureSkills Prime","url":"https://www.futureskillsprime.in/","changed":false,"status":"tracked"}
+  ],
+  "course_health": []
+}

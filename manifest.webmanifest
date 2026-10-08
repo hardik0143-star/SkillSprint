@@ -1,0 +1,17 @@
+{
+  "name": "SkillSprint \u2014 Free Short Courses",
+  "short_name": "SkillSprint",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#06101d",
+  "theme_color": "#07111f",
+  "description": "Verified free short courses with credentials, roadmaps and a 7-day sprint builder.",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

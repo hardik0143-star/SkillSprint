@@ -1,0 +1,104 @@
+#!/usr/bin/env python3
+"""SkillSprint weekly verification radar.
+
+The checker does two things:
+1. fingerprints trusted provider catalog pages so material source changes are surfaced;
+2. checks every listed official course URL for reachability.
+
+It deliberately never auto-publishes a course. Pricing, duration, certificate terms and
+eligibility still require human verification before changing the curated catalog.
+"""
+from __future__ import annotations
+import concurrent.futures as cf
+import hashlib, json, pathlib, re, urllib.error, urllib.request
+from datetime import datetime, timezone
+
+ROOT=pathlib.Path(__file__).resolve().parents[1]
+STATE=ROOT/'data'/'source-watch-state.json'
+OUT=ROOT/'data'/'source-watch.json'
+QUEUE=ROOT/'data'/'review-queue.md'
+COURSES=ROOT/'data'/'courses.js'
+SOURCES={
+ 'Skill India Digital Hub':'https://www.skillindiadigital.gov.in/',
+ 'IBM SkillsBuild':'https://skillsbuild.org/learning-catalog',
+ 'HP LIFE':'https://www.life-global.org/allcourses',
+ 'Simplilearn SkillUp':'https://www.simplilearn.com/skillup-free-online-courses',
+ 'HubSpot Academy':'https://academy.hubspot.com/certification-overview',
+ 'Semrush Academy':'https://www.semrush.com/academy/certification/',
+ 'Cisco Networking Academy':'https://www.netacad.com/catalogs/learn',
+ 'Kaggle Learn':'https://www.kaggle.com/learn',
+ 'NCS DigiSaksham':'https://www.ncs.gov.in/job-seeker/_layouts/15/ncsp/faqs.aspx',
+ 'FutureSkills Prime':'https://www.futureskillsprime.in/'
+}
+UA='Mozilla/5.0 (compatible; SkillSprintCourseWatch/2.0; +https://github.com/)'
+
+def get(url, limit=1_000_000):
+    req=urllib.request.Request(url,headers={'User-Agent':UA,'Accept':'text/html,application/xhtml+xml'})
+    try:
+        with urllib.request.urlopen(req,timeout=18) as r:
+            return r.getcode() or 200, r.read(limit).decode('utf-8','ignore')
+    except urllib.error.HTTPError as e:
+        # 401/403 often means the provider blocks automation, not that the course is gone.
+        return e.code, ''
+
+def fingerprint(url):
+    try:
+        code,html=get(url)
+        if code in (401,403): return {'status':'blocked','code':code}
+        if code>=400: return {'status':'check_failed','code':code}
+        text=re.sub(r'<script[\s\S]*?</script>|<style[\s\S]*?</style>',' ',html,flags=re.I)
+        text=re.sub(r'<[^>]+>',' ',text)
+        text=re.sub(r'\s+',' ',text).strip()
+        return {'status':'ok','code':code,'digest':hashlib.sha256(text.encode()).hexdigest()}
+    except Exception as e:
+        return {'status':'check_failed','error':str(e)[:180]}
+
+def linkcheck(course):
+    try:
+        code,_=get(course['url'],4096)
+        if code in (401,403): status='blocked'
+        elif code in (404,410): status='broken'
+        elif code>=400: status='check_failed'
+        else: status='ok'
+        return {'id':course['id'],'title':course['title'],'url':course['url'],'status':status,'code':code}
+    except Exception as e:
+        return {'id':course['id'],'title':course['title'],'url':course['url'],'status':'check_failed','error':str(e)[:180]}
+
+def load_courses():
+    raw=COURSES.read_text(encoding='utf-8').strip()
+    raw=re.sub(r'^window\.COURSES\s*=\s*','',raw)
+    raw=re.sub(r';\s*$','',raw)
+    return json.loads(raw)
+
+old=json.loads(STATE.read_text()) if STATE.exists() else {}
+new_state={}; source_rows=[]
+for name,url in SOURCES.items():
+    res=fingerprint(url); digest=res.get('digest')
+    changed=bool(digest and old.get(name) and old[name]!=digest)
+    if digest:new_state[name]=digest
+    elif name in old:new_state[name]=old[name]
+    source_rows.append({'name':name,'url':url,'changed':changed,**{k:v for k,v in res.items() if k!='digest'}})
+
+courses=load_courses()
+with cf.ThreadPoolExecutor(max_workers=8) as pool:
+    course_health=list(pool.map(linkcheck,courses))
+course_health.sort(key=lambda x:x['title'].lower())
+
+stamp=datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
+summary={
+    'providers_checked':len(source_rows),
+    'provider_changes':sum(1 for r in source_rows if r.get('changed')),
+    'courses_checked':len(course_health),
+    'course_issues':sum(1 for r in course_health if r.get('status') in ('broken','check_failed')),
+    'blocked_checks':sum(1 for r in course_health if r.get('status')=='blocked')
+}
+OUT.write_text(json.dumps({'checked_at':stamp,'summary':summary,'sources':source_rows,'course_health':course_health},indent=2),encoding='utf-8')
+STATE.write_text(json.dumps(new_state,indent=2),encoding='utf-8')
+
+review=[]
+for r in source_rows:
+    if r.get('changed'): review.append(f"- Provider changed: **{r['name']}** — {r['url']}")
+for r in course_health:
+    if r.get('status') in ('broken','check_failed'): review.append(f"- Course link needs review: **{r['title']}** ({r.get('code','network error')}) — {r['url']}")
+QUEUE.write_text('# SkillSprint review queue\n\nLast run: '+stamp+'\n\n'+('\n'.join(review) if review else 'No manual-review items were generated by the latest automated check.')+'\n',encoding='utf-8')
+print(json.dumps(summary))

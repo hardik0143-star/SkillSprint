@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="SkillSprint curates verified free short courses with free certificates or credentials, all designed to fit within 15 hours." />
+  <meta name="theme-color" content="#07111f" />
+  <meta property="og:title" content="SkillSprint — Free Short Courses with Certificates" />
+  <meta property="og:description" content="Verified free micro-courses, career roadmaps and a 7-day learning sprint builder." />
+  <title>SkillSprint V2 — Free Short Courses with Certificates</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="SkillSprint home">
+      <span class="brand-mark">S</span><span>SkillSprint</span><em>V2</em>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="#new">New</a>
+      <a href="#roadmaps">Roadmaps</a>
+      <a href="#courses">Courses</a>
+      <a href="#government">Government</a>
+      <button class="ghost compact" id="installApp" hidden>Install</button>
+      <button class="ghost compact" id="openQuiz">Find my course</button>
+      <button class="ghost" id="openSprint">My Sprint <span id="sprintCount">0</span></button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">FREE • VERIFIED • ≤15 HOURS • CREDENTIAL INCLUDED</div>
+        <h1>Build a skill.<br><span>Prove it.</span><br>Move forward.</h1>
+        <p>SkillSprint filters out long courses, paid-certificate surprises and weak listings. Pick a focused course, follow a ready-made roadmap, or build a realistic 7-day sprint.</p>
+        <div class="hero-actions">
+          <button class="primary" id="startQuizHero">Find my best course</button>
+          <a class="secondary" href="#courses">Browse all courses</a>
+        </div>
+        <div class="trust-row"><span>✓ Free learning</span><span>✓ Free credential</span><span>✓ Official provider link</span><span>✓ Verification freshness shown</span></div>
+      </div>
+      <aside class="hero-panel" aria-label="Catalog summary">
+        <div class="panel-top"><span>SKILLSPRINT VERIFIED CATALOG</span><span class="live-dot">● V2</span></div>
+        <div class="metric"><strong id="courseMetric">0</strong><span>short courses</span></div>
+        <div class="metric-grid">
+          <div><strong id="providerMetric">0</strong><span>trusted providers</span></div>
+          <div><strong id="newMetric">0</strong><span>new this week</span></div>
+          <div><strong>≤15h</strong><span>per course</span></div>
+          <div><strong>₹0</strong><span>learning + credential</span></div>
+        </div>
+        <div class="verification-note">Catalog curated <b>6 Oct 2026</b>. Terms can change, so every card shows how recently the source was checked.</div>
+      </aside>
+    </section>
+
+    <section class="quick-tracks" aria-label="Popular skill tracks">
+      <button data-track="AI & GenAI">🤖 <b>AI & GenAI</b><span>Practical AI + ML</span></button>
+      <button data-track="Data & Analytics">📊 <b>Data & Analytics</b><span>Excel, SQL, BI, data</span></button>
+      <button data-track="Cybersecurity">🛡️ <b>Cybersecurity</b><span>Security foundations</span></button>
+      <button data-track="Project & Business">🧭 <b>Business & PM</b><span>BA, PM, RevOps</span></button>
+      <button data-track="Software & Automation">💻 <b>Coding</b><span>Python + automation</span></button>
+      <button data-track="Marketing">📣 <b>Marketing</b><span>SEO, AEO, digital</span></button>
+    </section>
+
+    <section class="new-section" id="new">
+      <div class="section-heading">
+        <div><div class="eyebrow">NEW THIS WEEK</div><h2>Fresh additions worth checking</h2><p>Recently added after checking duration, cost, credential and official source.</p></div>
+        <button class="text-link" id="viewAllNew">View all new courses →</button>
+      </div>
+      <div class="mini-grid" id="newGrid"></div>
+    </section>
+
+    <section class="roadmaps" id="roadmaps">
+      <div class="section-heading">
+        <div><div class="eyebrow">7-DAY ROADMAPS</div><h2>Don’t know what to learn first?</h2><p>Choose a goal. Each roadmap stays compact enough for a focused week and uses only courses already in the verified catalog.</p></div>
+      </div>
+      <div class="roadmap-grid" id="roadmapGrid"></div>
+    </section>
+
+    <section class="catalog" id="courses">
+      <div class="section-heading">
+        <div><div class="eyebrow">CURATED CATALOG</div><h2>Courses that respect your time</h2></div>
+        <div class="result-meta"><b id="visibleCount">0</b> shown · <span id="catalogSummary">verified today</span></div>
+      </div>
+      <div class="filters">
+        <label class="search"><span>⌕</span><input id="search" placeholder="Search AI, Python, SQL, project management…" aria-label="Search courses" /></label>
+        <select id="category" aria-label="Skill category"><option value="All">All skills</option></select>
+        <select id="duration" aria-label="Maximum duration"><option value="All">Any duration</option><option value="1">≤ 1 hour</option><option value="3">≤ 3 hours</option><option value="7">≤ 7 hours</option><option value="15">≤ 15 hours</option></select>
+        <select id="provider" aria-label="Provider"><option value="All">All providers</option></select>
+        <select id="region" aria-label="Availability"><option value="All">India + Global</option><option value="India">India-focused</option><option value="Global">Global</option></select>
+        <select id="level" aria-label="Level"><option value="All">Any level</option><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select>
+        <select id="sort" aria-label="Sort courses"><option value="score">Best career value</option><option value="short">Shortest first</option><option value="new">Newest first</option><option value="fresh">Recently verified</option><option value="title">A–Z</option></select>
+        <button class="chip" id="govOnly">🇮🇳 Government</button>
+        <button class="chip" id="newOnly">✨ New</button>
+        <button class="chip" id="favoritesOnly">★ Favorites</button>
+        <button class="text-button" id="resetFilters">Reset</button>
+      </div>
+      <div class="course-grid" id="courseGrid"></div>
+      <div class="empty" id="emptyState" hidden>No matching courses. Try clearing a filter.</div>
+    </section>
+
+    <section class="government" id="government">
+      <div class="government-copy">
+        <div class="eyebrow">GOVERNMENT & PUBLIC LEARNING</div>
+        <h2>Public courses get a stricter check.</h2>
+        <p>A Government or public-learning badge is only shown when the current course page verifies the course is free, short enough and includes the stated credential. Other public programs remain on the source radar until those details can be confirmed.</p>
+        <div class="button-row"><button class="primary" id="showGovernment">Show verified government courses</button><button class="secondary" id="openSources">Source radar</button></div>
+      </div>
+      <div class="gov-card">
+        <div class="flag">🇮🇳</div>
+        <div><small>FEATURED GOVERNMENT COURSE</small><h3>Unlocking AI for Everyone</h3><p>Microsoft on Skill India Digital Hub · 45 min · Free · Certificate of Completion · Self-paced</p><a href="https://www.skillindiadigital.gov.in/courses/detail/658a7e4d-dadd-4922-8f22-9593b904f690" target="_blank" rel="noopener">Open official course ↗</a></div>
+      </div>
+    </section>
+
+    <section class="updates" id="updates">
+      <div>
+        <div class="eyebrow">VERIFICATION RADAR</div>
+        <h2>New courses are discovered. Humans still make the final call.</h2>
+        <p>The included GitHub Action checks trusted provider pages weekly. V2 also checks individual course links and highlights stale verification dates instead of automatically publishing anything that merely looks free.</p>
+      </div>
+      <div id="watchStatus" class="watch-box"><span class="pulse"></span><div><b>Verification radar ready</b><small>Upload to GitHub and enable Actions to run the weekly checks.</small></div></div>
+    </section>
+
+    <section class="quality" id="how">
+      <article><span>01</span><h3>Free means free</h3><p>Both the learning and the stated credential must be available without an advertised certificate fee.</p></article>
+      <article><span>02</span><h3>≤15 hours</h3><p>Every course is short enough to fit into a practical seven-day learning window.</p></article>
+      <article><span>03</span><h3>Career relevance</h3><p>Editorial scores prioritize demand, practical work, credential quality and portability of the skill.</p></article>
+      <article><span>04</span><h3>No fake certainty</h3><p>Completion certificates, digital badges and platform certifications are clearly distinguished.</p></article>
+    </section>
+
+    <section class="rules">
+      <div class="section-heading"><div><div class="eyebrow">CREDENTIAL STRENGTH</div><h2>Know what you are earning</h2></div></div>
+      <div class="rule-grid">
+        <article><b>Strongest here</b><h3>Platform certification</h3><p>Assessment-based certification from an established platform such as HubSpot or Semrush.</p></article>
+        <article><b>Strong</b><h3>Digital credential / badge</h3><p>Shareable badge or credential issued after meeting the provider’s completion criteria.</p></article>
+        <article><b>Useful</b><h3>Completion certificate</h3><p>Proof of completion. Valuable when the underlying skill is relevant and you can demonstrate it.</p></article>
+      </div>
+      <p class="disclaimer">SkillSprint is an independent directory. A course certificate is not the same as a regulated professional license or a proctored industry certification exam. Always re-check the provider page before enrolling.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div><b>SkillSprint V2</b><p>Fast, verified learning for people who value their time.</p><button class="footer-link" id="openCurator">Curator console</button></div>
+    <div><p>Course ownership, content and credentials belong to their respective providers.</p><p>Catalog verification date: 6 Oct 2026.</p></div>
+  </footer>
+
+  <dialog id="sprintDialog" class="modal wide">
+    <form method="dialog" class="dialog-head"><div><small>YOUR LEARNING PLAN</small><h2>7-Day Skill Sprint</h2></div><button aria-label="Close">✕</button></form>
+    <div class="progress-strip"><div><span>Courses</span><b id="sprintCourseCount">0 / 7</b></div><div><span>Planned</span><b id="sprintHours">0h / 15h</b></div><div><span>Completed</span><b id="completedCount">0</b></div></div>
+    <div id="sprintItems"></div>
+    <div class="sprint-actions"><button class="secondary" id="clearSprint" type="button">Clear sprint</button><button class="secondary" id="exportSprint" type="button">Export plan</button><button class="primary" id="copySprint" type="button">Copy plan</button></div>
+    <p class="tiny">A sprint can contain up to 7 courses and 15 planned hours. Mark courses complete from their detail page.</p>
+  </dialog>
+
+  <dialog id="quizDialog" class="modal">
+    <form method="dialog" class="dialog-head"><div><small>PERSONALIZED MATCH</small><h2>Which short course should you take?</h2></div><button aria-label="Close">✕</button></form>
+    <form id="quizForm" class="quiz-form">
+      <label>What do you want most?<select name="goal" required><option value="">Choose a goal</option><option value="AI & GenAI">Use AI better</option><option value="Data & Analytics">Analyze data</option><option value="Cybersecurity">Learn cybersecurity</option><option value="Project & Business">Improve BA / project / business skills</option><option value="Software & Automation">Learn coding / automation</option><option value="Marketing">Improve digital marketing</option><option value="Healthcare & Life Sciences">Explore healthcare AI</option></select></label>
+      <label>Your current level<select name="level"><option value="Beginner">Beginner / starting fresh</option><option value="Intermediate">Intermediate</option></select></label>
+      <label>Time available this week<select name="hours"><option value="1">About 1 hour</option><option value="3">Up to 3 hours</option><option value="7" selected>Up to 7 hours</option><option value="15">Up to 15 hours</option></select></label>
+      <label>Credential preference<select name="credential"><option value="Any">Any useful credential</option><option value="Platform certification">Platform certification</option><option value="Digital credential">Digital badge / credential</option><option value="Completion certificate">Completion certificate</option></select></label>
+      <label>Availability<select name="region"><option value="All">India + global</option><option value="India">India-focused</option><option value="Global">Global</option></select></label>
+      <button class="primary full" type="submit">Show my best matches</button>
+    </form>
+    <div id="quizResults" class="quiz-results" hidden></div>
+  </dialog>
+
+  <dialog id="detailDialog" class="modal wide">
+    <form method="dialog" class="dialog-head"><div><small>COURSE DETAILS</small><h2 id="detailTitle">Course</h2></div><button aria-label="Close">✕</button></form>
+    <div id="detailBody"></div>
+  </dialog>
+
+  <dialog id="sourcesDialog" class="modal wide">
+    <form method="dialog" class="dialog-head"><div><small>WEEKLY COURSE WATCH</small><h2>Source radar</h2></div><button aria-label="Close">✕</button></form>
+    <div id="sourceRows"></div>
+  </dialog>
+
+  <dialog id="curatorDialog" class="modal wide">
+    <form method="dialog" class="dialog-head"><div><small>LOCAL CURATOR TOOLS</small><h2>Curator console</h2></div><button aria-label="Close">✕</button></form>
+    <div class="notice">This static-site console manages browser-local learner data and exports the catalog. It is not a secure multi-user admin backend.</div>
+    <div class="admin-grid">
+      <article><small>Catalog</small><strong id="adminCourses">0</strong><span>verified course records</span></article>
+      <article><small>Providers</small><strong id="adminProviders">0</strong><span>trusted providers</span></article>
+      <article><small>Favorites</small><strong id="adminFavorites">0</strong><span>saved on this device</span></article>
+      <article><small>Completed</small><strong id="adminCompleted">0</strong><span>marked complete</span></article>
+    </div>
+    <div class="admin-actions">
+      <button class="secondary" id="exportCatalog" type="button">Export catalog JSON</button>
+      <button class="secondary" id="exportProfile" type="button">Export my learning data</button>
+      <label class="secondary file-label">Import my learning data<input id="importProfile" type="file" accept="application/json" hidden></label>
+      <button class="danger" id="clearProfile" type="button">Clear my local data</button>
+    </div>
+  </dialog>
+
+  <script src="data/courses.js"></script>
+  <script src="data/roadmaps.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
